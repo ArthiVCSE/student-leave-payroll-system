@@ -36,6 +36,7 @@ function App() {
     setLoading(true);
     try {
       const response = await loginService(loginForm.email, loginForm.password, loginForm.role);
+         console.log("LOGIN RESPONSE:", response);
       if (response.success) {
         setUser(response.user);
         fetchLeaves();

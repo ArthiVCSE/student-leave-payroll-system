@@ -6,18 +6,22 @@ exports.login = async (req, res) => {
   const { email, password, role } = req.body;
 
   try {
-const query = `
-  SELECT * FROM users 
-  WHERE email = $1 
-  AND LOWER(role) = LOWER($2) 
-  AND is_active = true
-`;    const result = await db.query(query, [email, role]);
+    const query = `
+      SELECT * FROM users 
+      WHERE email = $1 
+      AND LOWER(role) = LOWER($2) 
+      AND is_active = true
+    `;
+
+    const result = await db.query(query, [email, role]);
 
     if (result.rows.length === 0) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
     const user = result.rows[0];
+
+    // 🔥 FIXED HERE
     const isMatch = password === user.password;
 
     if (!isMatch) {
