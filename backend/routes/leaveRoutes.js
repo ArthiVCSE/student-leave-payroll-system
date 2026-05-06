@@ -1,23 +1,26 @@
+// ============================================================
+// leaveRoutes.js - Routes for Student Leave Management
+// Base path: /api/leaves
+// ============================================================
+
 const express = require('express');
 const router = express.Router();
-
 const leaveController = require('../controllers/leaveController');
 const { verifyToken, isFaculty } = require('../middleware/authMiddleware');
 
-// 🔥 TEST ROUTE (No authentication needed)
+// GET /api/leaves/test - Health check route (no auth required)
 router.get('/test', (req, res) => {
   res.json({ message: "Working" });
 });
 
-// 🔐 PROTECTED ROUTES
-
-// Get all leaves (student/faculty based on role)
+// GET /api/leaves - Get leaves based on role
+// Student: gets own leaves | Faculty/Admin: gets all student leaves
 router.get('/', verifyToken, leaveController.getLeaves);
 
-// Create new leave request (student)
+// POST /api/leaves - Submit a new leave application (student only)
 router.post('/', verifyToken, leaveController.createLeave);
 
-// Update leave status (faculty only)
+// PUT /api/leaves/:leave_id - Approve or reject a leave request (faculty only)
 router.put('/:leave_id', verifyToken, isFaculty, leaveController.updateLeaveStatus);
 
 module.exports = router;
