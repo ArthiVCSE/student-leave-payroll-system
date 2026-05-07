@@ -29,7 +29,7 @@ exports.getFacultyPayroll = async (req, res) => {
 
     if (req.user.role === 'faculty') {
       // Faculty sees their own payroll with current month salary
-      query = `SELECT u.user_id, u.full_name, u.email, u.basic_salary, u.employee_id, 
+      query = `SELECT u.user_id, u.full_name, u.email, u.basic_salary, u.employee_id,
                       u.designation, u.department, u.experience_years,
                       COALESCE(SUM(CASE WHEN p.month = EXTRACT(MONTH FROM NOW()) THEN p.net_salary ELSE 0 END), 0) as current_month_salary
                FROM users u

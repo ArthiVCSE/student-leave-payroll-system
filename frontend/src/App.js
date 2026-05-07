@@ -610,7 +610,7 @@ useEffect(() => {
             <thead>
               <tr className="border-b">
                 <th className="text-left py-3 px-4 text-sm font-semibold">Month</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold">Basic Salary</th>
+                <th className="text-left py-3 px-4 text-sm font-semibold">Gross Salary</th>
                 <th className="text-left py-3 px-4 text-sm font-semibold">Deductions</th>
                 <th className="text-left py-3 px-4 text-sm font-semibold">Net Salary</th>
                 <th className="text-left py-3 px-4 text-sm font-semibold">Date</th>
@@ -620,10 +620,10 @@ useEffect(() => {
               {paymentHistory.slice(0, 10).map(payment => (
                 <tr key={payment.payroll_id} className="border-b hover:bg-gray-50">
                   <td className="py-4 px-6 text-sm">{payment.month}/{payment.year}</td>
-                  <td className="py-4 px-6 text-sm font-semibold">₹{payment.basic_salary}</td>
+                  <td className="py-4 px-6 text-sm font-semibold">₹{payment.gross_salary}</td>
                   <td className="py-4 px-6 text-sm text-red-600">₹{payment.deductions}</td>
                   <td className="py-4 px-6 text-sm font-bold text-green-600">₹{payment.net_salary}</td>
-                  <td className="py-4 px-6 text-sm">{new Date(payment.processed_date).toLocaleDateString()}</td>
+                  <td className="py-4 px-6 text-sm">{new Date(payment.payment_date).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -993,6 +993,8 @@ useEffect(() => {
 
   const isFacultyOrAdmin = ['faculty', 'admin'].includes(user?.role);
 
+  // ── Manage Users (Admin only) ──────────────────────────────────────────────
+  // Admin can add students/faculty and deactivate existing users from the UI
   const renderManageUsers = () => {
     const fetchUsers = async () => {
       const response = await getUsers();
@@ -1032,6 +1034,7 @@ useEffect(() => {
       <div className="space-y-6">
         <h2 className="text-2xl font-bold text-gray-800">Manage Users</h2>
 
+        {/* Add New User Form */}
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-4">Add New User</h3>
           <form onSubmit={handleCreateUser} className="max-w-3xl">
@@ -1089,6 +1092,7 @@ useEffect(() => {
           </form>
         </div>
 
+        {/* All Users Table */}
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-4">All Users</h3>
           <div className="overflow-x-auto">
